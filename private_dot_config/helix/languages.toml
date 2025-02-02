@@ -1,0 +1,104 @@
+### PYTHON
+[[language]]
+name = "python"
+language-servers = [ "pyright", "ruff" ]
+file-types = ["py", "pyi"]
+roots = ["pyproject.toml", "setup.py", "setup.cfg"]
+indent = { tab-width = 4, unit = "    " }
+rulers = [79, 100]
+
+[language-server.pyright.config.python.analysis]
+typeCheckingMode = "basic"
+
+[language-server.ruff]
+command = "ruff-lsp"
+
+[language-server.ruff.config.settings]
+args = ["--ignore", "E501"]
+
+[language.formatter]
+command = "black"
+args = ["--line-length", "100", "--quiet", "-"]
+
+### TOML
+[[language]]
+name = "toml"
+
+[language.formatter]
+command = "taplo"
+args = ["fmt", "-"]
+
+### GO
+[[language]]
+name = "go"
+auto-format = true
+language-servers = ["gopls"]
+formatter = { command = "goimports" }
+
+[language-server.gopls]
+command = "gopls"
+
+[language-server.gopls.config]
+gofumpt = true
+hints = { "assignVariableType" = false, "compositeLiteralFields" = true, "compositeLiteralTypes" = true, "constantValues" = true, "functionTypeParameters" = false, "parameterNames" = false, "rangeVariableTypes" = true }
+
+### RUST
+[[language]]
+name = "rust"
+rulers = [100]
+
+[language-server.rust-analyzer.config.check]
+command = "clippy"
+
+[language-server.rust-analyzer.config.inlayHints]
+renderColons = true
+typeHints = { enable = false, hideNamedConstructor = true, hideClosureInitialization = true }
+parameterHints = { enable = false }
+chainingHints = { enable = false }
+
+### C
+[[language]]
+name = "c"
+indent = { tab-width = 4, unit = "    " }
+
+### C++
+[[language]]
+name = "cpp"
+file-types = ["cpp", "hpp", "c++", "cc", "ipp"]
+scope = "source.cpp"
+injection-regex = "cpp"
+comment-token = "//"
+auto-format = true
+block-comment-tokens = { start = "/*", end = "*/" }
+language-servers = [ "clangd" ]
+indent = { tab-width = 4, unit = "    " }
+rulers = [100]
+
+[language-server.clangd]
+args = ["--compile-commands-dir=compile_commands_directory"]
+
+[language.formatter]
+command = "clang-format"
+
+[language.debugger]
+name = "lldb-dap"
+transport = "stdio"
+command = "lldb-dap"
+
+[[language.debugger.templates]]
+name = "binary"
+request = "launch"
+completion = [ { name = "binary", completion = "filename"} ]
+args = { program = "{0}", console = "internalConsole" }
+
+[[language.debugger.templates]]
+name = "attach"
+request = "attach"
+completion = [ "pid" ]
+args = { console = "internalConsole", pid = "{0}" }
+
+[[language.debugger.templates]]
+name = "gdbserver attach"
+request = "attach"
+completion = [ { name = "lldb connect url", default = "connect://localhost:3333" }, { name = "file", completion = "filename" }, "pid" ]
+args = { console = "internalConsole", attachCommands = [ "platform select remote-gdb-server", "platform connect {0}", "file {1}", "attach {2}" ] }

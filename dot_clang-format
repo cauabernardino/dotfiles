@@ -1,0 +1,8 @@
+BasedOnStyle: Google
+BreakBeforeBraces: Allman
+ColumnLimit: 100
+IndentWidth: 4
+AccessModifierOffset: -2
+BreakConstructorInitializers: BeforeComma
+BreakInheritanceList: BeforeComma
+PackConstructorInitializers: Never
